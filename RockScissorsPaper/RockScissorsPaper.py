@@ -1,6 +1,5 @@
 """
-Rock-Paper-Scissors game!
-Each player chooses a move from the choices:
+Rock-Paper-Scissors game. Each player chooses a move from the choices:
 rock, paper or scissors.
 If they chose the same move the game is a tie. Otherwise:
 rock beats scissors
@@ -11,25 +10,35 @@ In this program a human plays against an AI. The AI chooses randomly.
 """
 import random
 
-N_GAMES = 3
-
-
 def main():
     print_welcome()
+    n_games = number_of_games()
+    print()
     score = 0
-    for i in range(N_GAMES):
+    for i in range(n_games):
         human_move = get_human_move()
         ai_move = get_ai_move()
         winner = get_winner(ai_move, human_move)
         print("AI move was", ai_move)
-        print("Winner was", winner)
+        if winner == "ai" or winner == "human":
+            print("Winner was", winner)
+        elif winner == "tie":
+            print("It was a tie!")
         print()
         score += score_result(winner)
     print("Your score", score)
 
+def number_of_games(): # asks user how many games to play
+    while True:
+        try:
+            n_games = int(input("How many games you want to play? "))
+            if n_games > 0:
+                return n_games
+        except ValueError:
+            print("Invalid input. Please enter the number of games you'd like to play. ")
+            print()
 
 def score_result(winner):
-    score = 0
     if winner == "ai":
         return -1
     elif winner == "human":
@@ -37,54 +46,18 @@ def score_result(winner):
     else:
         return 0
 
-
-def get_ai_move():
+def get_ai_move(): #gets AI move
     ai_move = random.choice(["scissors", "rock", "paper"])
     return ai_move
 
-
-def get_human_move():
+def get_human_move(): #gets human move and checks if it's valid
     while True:
         human_move = input("What do you play? ")
-        if is_valid_move(human_move):
+        if human_move == 'rock' or human_move == 'scissors' or human_move == 'paper':
             return human_move
-        print("Invalid input.")
+        print("Invalid input. \n")
 
-
-def is_valid_move(move):
-    """
-    parameter move: string representing what the user entered
-    return: boolean which is True, if the move was valid
-    Doctest:
-    >>> is_valid_move('rock')
-    True
-    >>> is_valid_move('paper')
-    True
-    >>> is_valid_move('unicorn')
-    False
-    """
-
-    if move == 'rock':
-        return True
-    elif move == 'scissors':
-        return True
-    elif move == 'paper':
-        return True
-    return False
-
-
-def get_winner(ai_move, human_move):
-    """
-    Returns the winner depends on who won
-    Doctest:
-    >>> get_winner(rock, paper)
-    "human"
-    >>> get_winner(rock, scissors)
-    "ai"
-    >>> get_winner(rock, rock)
-    "tie"
-    """
-
+def get_winner(ai_move, human_move): # returns the winner
     if ai_move == human_move:
         return "tie"
     elif ai_move == "rock":
@@ -103,16 +76,11 @@ def get_winner(ai_move, human_move):
         elif human_move == "rock":
             return "ai"
 
-
 def print_welcome():
-    print('Welcome to Rock Paper Scissors')
-    print('You will play ' + str(N_GAMES) + ' games against the AI')
-    print('rock beats scissors')
-    print('scissors beats paper')
-    print('paper beats rock')
+    print('Welcome to Rock Scissors Paper. You will play against the AI')
+    print('rock beats scissors \nscissors beats paper \npaper beats rock')
     print('----------------------------------------------')
     print('')
-
 
 if __name__ == '__main__':
     main()
